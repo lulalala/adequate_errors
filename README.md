@@ -4,16 +4,21 @@ Let's make a more OO, more flexible error API!
 
 ---
 
-As requirement gets more complex, Rails' error API often cannot cope with those requirements elegantly.
+As requirements get more complex, Rails' error API often cannot cope with them elegantly.
 
-This repo aims for you to share the inconveniences you faced, and suggest a better, more usable API.
+This repo aims to collect the inconveniences you have faced, and allow you to suggest a better, more usable API.
 
-Currently we are at the first stage, where activities happen mostly on WIKI, where we:
+Currently we are at the initial stage [wiki editing], mainly to:
 
 1. Collect use case
-2. Design API on wiki
-
-[SO COME AND SEE WHAT'S GOING ON AND JOIN US ON THE WIKI](https://github.com/lulalala/rails_error_api_redesign/wiki)
+2. Design API
 
 
-The second stage will start on 1st July 2017, where we can discuss on how to implement the redesigned API. Maybe we can do it in Rails, maybe we can do a 3rd party library. We shall see!
+[So come to our wiki, see what's going on, and join us!](https://github.com/lulalala/rails_error_api_redesign/wiki)
+
+
+The second stage will then start on 1st July 2017, where we can discuss on how to implement the redesigned API. Maybe we can do it in Rails, maybe we can do a 3rd party library. We shall see!
+
+---
+
+This is a fan project and is not affiliated to Rails Core team.
