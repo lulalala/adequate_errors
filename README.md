@@ -1,10 +1,10 @@
-# Rails Error API Redesign Initiative
+# ActiveModel::Errors API Redesign Initiative
 
 Let's make a more OO, more flexible error API!
 
 ---
 
-As requirements get more complex, Rails' error API often cannot cope with them elegantly.
+Sometimes [ActiveModel::Errors API](http://api.rubyonrails.org/classes/ActiveModel/Errors.html) cannot cope with complex business logic or requirements elegantly.
 
 This repo aims to collect the inconveniences you have faced, and allow you to suggest a better, more usable API.
 
