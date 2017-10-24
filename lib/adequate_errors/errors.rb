@@ -11,10 +11,9 @@ module AdequateErrors
                    :empty?, :blank?, :to_xml, :as_json, :to_hash, :added?, :full_messages, :full_messages_for,
                    :full_message, :generate_message, :marshal_dump, :marshal_load, :init_with
 
-    def initialize(base)
+    def initialize(base, legacy_errors: nil)
       # Reference to Rails official errors implementation
-      @legacy_errors = ::ActiveModel::Errors.new(base)
-
+      @legacy_errors = legacy_errors || ::ActiveModel::Errors.new(base)
       @base = base
       @errors = []
     end
