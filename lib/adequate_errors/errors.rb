@@ -42,8 +42,14 @@ module AdequateErrors
       @errors
     end
 
-    def match(params)
-      return @errors.dup if params.nil?
+    # @param params [Hash] filter condition
+    #   :attribute key matches errors belonging to specific attribute.
+    #   :type key matches errors with specific type of error, for example :blank
+    #   custom keys can be used to match custom options used during `add`.
+    # @return [Array(AdequateErrors::Error)]
+    #   If params is empty, all errors are returned.
+    def where(params)
+      return @errors.dup if params.blank?
 
       @errors.select {|error|
         error.match?(params)
