@@ -17,23 +17,21 @@ module AdequateErrors
     end
 
     def match?(params)
-      match = true
-
       if params.key?(:attribute) && @attribute != params[:attribute]
-        match = false
+        return false
       end
 
       if params.key?(:type) && @type != params[:type]
-        match = false
+        return false
       end
 
-      params.keys.except(:attribute, :type).each do |key|
+      (params.keys - [:attribute, :type]).each do |key|
         if @options[key] != params[key]
-          match = false
+          return false
         end
       end
 
-      match
+      true
     end
   end
 end
