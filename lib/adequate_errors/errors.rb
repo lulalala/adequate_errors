@@ -7,20 +7,12 @@ module AdequateErrors
     include Enumerable
 
     extend Forwardable
-    def_delegators :@errors, :each, *Enumerable.instance_methods(false)
+    def_delegators :@errors, :each, :size, :clear, *Enumerable.instance_methods(false)
 
     def initialize(base, rails_errors)
       @base = base
       @rails_errors = rails_errors
       @errors = []
-    end
-
-    def size
-      @errors.count
-    end
-
-    def clear
-      @errors.clear
     end
 
     def delete(key)
