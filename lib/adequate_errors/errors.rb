@@ -4,42 +4,33 @@ require 'adequate_errors/error'
 
 module AdequateErrors
   class Errors
-    extend Forwardable
-    def_delegators :@legacy_errors, *Enumerable.instance_methods(false)
-    def_delegators :@legacy_errors,
-                   :initialize_dup, :copy!, :[], :each, :size, :values, :keys,
-                   :empty?, :blank?, :to_xml, :as_json, :to_hash, :added?, :full_messages, :full_messages_for,
-                   :full_message, :generate_message, :marshal_dump, :marshal_load, :init_with
+    include Enumerable
 
-    def initialize(base, legacy_errors: nil)
-      # Reference to Rails official errors implementation
-      @legacy_errors = legacy_errors || ::ActiveModel::Errors.new(base)
+    extend Forwardable
+    def_delegators :@errors, :each, *Enumerable.instance_methods(false)
+
+    def initialize(base, rails_errors)
       @base = base
+      @rails_errors = rails_errors
       @errors = []
+    end
+
+    def size
+      @errors.count
     end
 
     def clear
       @errors.clear
-      @legacy_errors.clear
     end
 
     def delete(key)
       @errors.delete_if do |error|
         error.attribute == key
       end
-      @legacy_errors.delete(key)
     end
 
-    def add(attribute, message = :invalid, options = {})
-      @errors.append(::AdequateErrors::Error.new(@base, attribute, message, options))
-
-      @legacy_errors.add(attribute, message, options)
-    end
-
-    # TODO: Future plan is to make this class enumerate @errors directly.
-    # So when adding new public methods, avoid name collision with Enumerable methods.
-    def error_objects
-      @errors
+    def add(attribute, type = :invalid, options = {})
+      @errors.append(::AdequateErrors::Error.new(@base, attribute, type, options))
     end
 
     # @param params [Hash] filter condition

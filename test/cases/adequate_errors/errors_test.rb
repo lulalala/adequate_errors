@@ -5,22 +5,18 @@ require 'adequate_errors/errors'
 
 describe AdequateErrors::Errors do
   let(:model) { Topic.new }
-  let(:legacy_errors) { ActiveModel::Errors.new(model) }
-  subject { AdequateErrors::Errors.new(model, legacy_errors: legacy_errors) }
+  let(:rails_errors) { ActiveModel::Errors.new(model) }
+  subject { AdequateErrors::Errors.new(model, rails_errors) }
 
   describe '#add' do
     it 'assigns attributes' do
-      assert_equal 0, subject.error_objects.size
-      assert_equal 0, legacy_errors.details.count
+      assert_equal 0, subject.size
 
       subject.add(:title, :not_attractive)
 
-      assert_equal 1, subject.error_objects.size
-      assert_equal :title, subject.error_objects.first.attribute
-      assert_equal :not_attractive, subject.error_objects.first.type
-
-      assert_equal 1, legacy_errors.details.count
-      assert_equal [{:error=>:not_attractive}], legacy_errors.details[:title]
+      assert_equal 1, subject.size
+      assert_equal :title, subject.first.attribute
+      assert_equal :not_attractive, subject.first.type
     end
   end
 
@@ -32,9 +28,7 @@ describe AdequateErrors::Errors do
 
       subject.delete(:title)
 
-      assert_equal 1, subject.error_objects.size
-      assert_equal 1, legacy_errors.details.count
-      assert_equal [], legacy_errors.details[:title]
+      assert_equal 1, subject.size
     end
   end
 
@@ -45,9 +39,7 @@ describe AdequateErrors::Errors do
 
       subject.clear
 
-      assert_equal 0, subject.error_objects.size
-      assert_equal 0, legacy_errors.details.count
-      assert_equal [], legacy_errors.details[:title]
+      assert_equal 0, subject.size
     end
   end
 
