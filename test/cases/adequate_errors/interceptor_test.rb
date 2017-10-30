@@ -6,20 +6,30 @@ require 'adequate_errors/errors'
 
 describe AdequateErrors::Interceptor do
   let(:model) { Topic.new }
-  let(:rails_errors) { ActiveModel::Errors.new(model) }
-  let(:adequate_errors) { AdequateErrors::Errors.new(model, rails_errors) }
-  subject { AdequateErrors::Interceptor.new(rails_errors, adequate_errors) }
+  let(:adequate_errors) { model.errors.adequate }
+
+  describe '#initialize' do
+    it 'initialize adequate_errors object' do
+      assert_equal ActiveModel::Errors, model.errors.class
+    end
+  end
+
+  describe '#adequate' do
+    it 'returns adequate_errors object' do
+      assert_equal AdequateErrors::Errors, model.errors.adequate.class
+    end
+  end
 
   describe '#add' do
     it 'assigns attributes' do
-      assert_equal 0, subject.size
-      assert_equal 0, rails_errors.details.count
+      assert_equal 0,model.errors.count
+      assert_equal 0, model.errors.details.count
 
-      subject.add(:title, :not_attractive)
+      model.errors.add(:title, :not_attractive)
 
-      assert_equal 1, rails_errors.size
-      assert_equal 1, rails_errors.details.count
-      assert_equal [{:error=>:not_attractive}], rails_errors.details[:title]
+      assert_equal 1, model.errors.size
+      assert_equal 1, model.errors.details.count
+      assert_equal [{:error=>:not_attractive}], model.errors.details[:title]
 
       assert_equal 1, adequate_errors.size
       assert_equal :title, adequate_errors.first.attribute
@@ -30,15 +40,15 @@ describe AdequateErrors::Interceptor do
 
   describe '#delete' do
     it 'assigns attributes' do
-      subject.add(:title, :not_attractive)
-      subject.add(:title, :not_provocative)
-      subject.add(:content, :too_vague)
+      model.errors.add(:title, :not_attractive)
+      model.errors.add(:title, :not_provocative)
+      model.errors.add(:content, :too_vague)
 
-      subject.delete(:title)
+      model.errors.delete(:title)
 
-      assert_equal 1, subject.size
-      assert_equal 1, rails_errors.details.count
-      assert_equal [], rails_errors.details[:title]
+      assert_equal 1, model.errors.size
+      assert_equal 1, model.errors.details.count
+      assert_equal [], model.errors.details[:title]
 
       assert_equal 1, adequate_errors.size
       assert_equal :content, adequate_errors.first.attribute
@@ -47,14 +57,14 @@ describe AdequateErrors::Interceptor do
 
   describe '#clear' do
     it 'assigns attributes' do
-      subject.add(:title, :not_attractive)
-      subject.add(:content, :too_vague)
+      model.errors.add(:title, :not_attractive)
+      model.errors.add(:content, :too_vague)
 
-      subject.clear
+      model.errors.clear
 
-      assert_equal 0, subject.size
-      assert_equal 0, rails_errors.details.count
-      assert_equal [], rails_errors.details[:title]
+      assert_equal 0, model.errors.size
+      assert_equal 0, model.errors.details.count
+      assert_equal [], model.errors.details[:title]
 
       assert_equal 0, adequate_errors.size
     end
