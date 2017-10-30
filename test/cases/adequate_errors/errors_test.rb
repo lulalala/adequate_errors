@@ -6,7 +6,7 @@ require 'adequate_errors/errors'
 describe AdequateErrors::Errors do
   let(:model) { Topic.new }
   let(:rails_errors) { ActiveModel::Errors.new(model) }
-  subject { AdequateErrors::Errors.new(model, rails_errors) }
+  subject { AdequateErrors::Errors.new(model) }
 
   describe '#add' do
     it 'assigns attributes' do

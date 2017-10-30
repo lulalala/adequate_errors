@@ -9,9 +9,8 @@ module AdequateErrors
     extend Forwardable
     def_delegators :@errors, :each, :size, :clear, *Enumerable.instance_methods(false)
 
-    def initialize(base, rails_errors)
+    def initialize(base)
       @base = base
-      @rails_errors = rails_errors
       @errors = []
     end
 
