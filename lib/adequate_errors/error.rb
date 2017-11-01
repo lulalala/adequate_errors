@@ -1,6 +1,6 @@
 module AdequateErrors
   class Error
-    def initialize(base, attribute, type, options)
+    def initialize(base, attribute, type, options = {})
       @base = base
       @attribute = attribute
       @type = type
