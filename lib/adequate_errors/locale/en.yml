@@ -1,0 +1,33 @@
+en:
+  adequate_errors:
+    # The values :model, :attribute and :value are always available for interpolation
+    # The value :count is available when applicable. Can be used for pluralization.
+    messages:
+      model_invalid: "Validation failed: %{errors}"
+      inclusion: "%{attribute} is not included in the list"
+      exclusion: "%{attribute} is reserved"
+      invalid: "%{attribute} is invalid"
+      confirmation: "%{attribute} doesn't match %{attribute}"
+      accepted: "%{attribute} must be accepted"
+      empty: "%{attribute} can't be empty"
+      blank: "%{attribute} can't be blank"
+      present: "%{attribute} must be blank"
+      too_long:
+        one: "%{attribute} is too long (maximum is 1 character)"
+        other: "%{attribute} is too long (maximum is %{count} characters)"
+      too_short:
+        one: "%{attribute} is too short (minimum is 1 character)"
+        other: "%{attribute} is too short (minimum is %{count} characters)"
+      wrong_length:
+        one: "%{attribute} is the wrong length (should be 1 character)"
+        other: "%{attribute} is the wrong length (should be %{count} characters)"
+      not_a_number: "%{attribute} is not a number"
+      not_an_integer: "%{attribute} must be an integer"
+      greater_than: "%{attribute} must be greater than %{count}"
+      greater_than_or_equal_to: "%{attribute} must be greater than or equal to %{count}"
+      equal_to: "%{attribute} must be equal to %{count}"
+      less_than: "%{attribute} must be less than %{count}"
+      less_than_or_equal_to: "%{attribute} must be less than or equal to %{count}"
+      other_than: "%{attribute} must be other than %{count}"
+      odd: "%{attribute} must be odd"
+      even: "%{attribute} must be even"
