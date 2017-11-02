@@ -34,7 +34,7 @@ describe AdequateErrors::Interceptor do
       assert_equal 1, adequate_errors.size
       assert_equal :title, adequate_errors.first.attribute
       assert_equal :not_attractive, adequate_errors.first.type
-
+      assert_equal model, adequate_errors.first.base
     end
   end
 

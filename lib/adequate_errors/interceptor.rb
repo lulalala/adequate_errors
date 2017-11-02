@@ -7,7 +7,7 @@ module AdequateErrors
   module Interceptor
     def initialize(base)
       rails_errors = super
-      @adequate_errors = ::AdequateErrors::Errors.new(self)
+      @adequate_errors = ::AdequateErrors::Errors.new(base)
       rails_errors
     end
 
