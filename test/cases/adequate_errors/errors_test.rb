@@ -1,7 +1,7 @@
 require "minitest/autorun"
 require "active_model"
 require "models/topic"
-require 'adequate_errors/errors'
+require 'adequate_errors'
 
 describe AdequateErrors::Errors do
   let(:model) { Topic.new }
@@ -55,6 +55,19 @@ describe AdequateErrors::Errors do
         assert_equal 0,subject.where(:attribute => :title, :type => :too_vague).size
         assert_equal 1,subject.where(:type => :too_vague).size
       end
+    end
+  end
+
+  describe '#messages' do
+    it 'returns an array of messages' do
+      subject.add(:title, :invalid)
+      subject.add(:content, :too_short, count: 5)
+
+      assert_equal ["Title is invalid", "Content is too short (minimum is 5 characters)"], subject.messages
+    end
+
+    it 'returns empty array if no error exists' do
+      assert_equal [], subject.messages
     end
   end
 end

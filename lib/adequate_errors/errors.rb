@@ -24,6 +24,10 @@ module AdequateErrors
       @errors.append(::AdequateErrors::Error.new(@base, attribute, type, options))
     end
 
+    def messages
+      @errors.map(&:message)
+    end
+
     # @param params [Hash] filter condition
     #   :attribute key matches errors belonging to specific attribute.
     #   :type key matches errors with specific type of error, for example :blank
