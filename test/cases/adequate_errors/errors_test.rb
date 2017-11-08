@@ -70,4 +70,15 @@ describe AdequateErrors::Errors do
       assert_equal [], subject.messages
     end
   end
+
+  describe '#messages_for' do
+    it 'returns message of the match' do
+      subject.add(:content, :too_short, count: 5)
+
+      assert_equal 0, subject.messages_for(:attribute => :title).size
+      assert_equal 1, subject.messages_for(:attribute => :content).size
+      assert_equal 1, subject.messages_for(:attribute => :content, count: 5).size
+      assert_equal 0, subject.messages_for(:attribute => :content, count: 0).size
+    end
+  end
 end

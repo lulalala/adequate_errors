@@ -28,6 +28,13 @@ module AdequateErrors
       @errors.map(&:message)
     end
 
+    # Convenience method to fetch error messages filtered by where condition.
+    # @param params [Hash] filter condition, see {#where} for details.
+    # @return [Array(String)] error messages
+    def messages_for(params)
+      where(params).map(&:message)
+    end
+
     # @param params [Hash] filter condition
     #   :attribute key matches errors belonging to specific attribute.
     #   :type key matches errors with specific type of error, for example :blank
