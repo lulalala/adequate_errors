@@ -20,10 +20,18 @@ module AdequateErrors
       end
     end
 
+    # Adds error.
+    # More than one error can be added to the same `attribute`.
+    # If no `type` is supplied, `:invalid` is assumed.
+    #
+    # @param attribute [Symbol] attribute that the error belongs to
+    # @param type [Symbol] error's type
+    # @param options [Hash] extra conditions such as interpolated value
     def add(attribute, type = :invalid, options = {})
       @errors.append(::AdequateErrors::Error.new(@base, attribute, type, options))
     end
 
+    # @return [Array(String)] all error messages
     def messages
       @errors.map(&:message)
     end
@@ -38,7 +46,7 @@ module AdequateErrors
     # @param params [Hash] filter condition
     #   :attribute key matches errors belonging to specific attribute.
     #   :type key matches errors with specific type of error, for example :blank
-    #   custom keys can be used to match custom options used during `add`.
+    #   custom keys can be used to match custom options used during {#add}.
     # @return [Array(AdequateErrors::Error)]
     #   If params is empty, all errors are returned.
     def where(params)
