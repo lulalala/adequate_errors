@@ -57,6 +57,12 @@ module AdequateErrors
       }
     end
 
+    # Returns true if the given attribute contains error, false otherwise.
+    # @return [Boolean]
+    def include?(attribute)
+      @errors.any?{|error| error.attribute == attribute }
+    end
+
     # @return [Hash] attributes with their error messages
     def to_hash
       hash = {}

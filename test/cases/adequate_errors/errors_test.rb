@@ -104,6 +104,18 @@ describe AdequateErrors::Errors do
     end
   end
 
+  describe '#include?' do
+    it 'returns true if attribute has error' do
+      subject.add(:title, :invalid)
+      assert subject.include?(:title)
+    end
+
+    it 'returns false if attribute has no error' do
+      subject.add(:title, :invalid)
+      assert !subject.include?(:content)
+    end
+  end
+
   describe '#to_hash' do
     it 'returns hash containing messages' do
       subject.add(:title, :invalid)
