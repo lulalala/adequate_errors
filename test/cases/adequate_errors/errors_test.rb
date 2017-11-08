@@ -103,4 +103,17 @@ describe AdequateErrors::Errors do
       assert_equal 0, subject.messages_for(:attribute => :content, count: 0).size
     end
   end
+
+  describe '#to_hash' do
+    it 'returns hash containing messages' do
+      subject.add(:title, :invalid)
+      subject.add(:content, :too_short, count: 5)
+
+      assert_equal({title: ['Title is invalid'], content: ["Content is too short (minimum is 5 characters)"]}, subject.to_hash)
+    end
+
+    it 'returns empty hash' do
+      assert_equal({}, subject.to_hash)
+    end
+  end
 end

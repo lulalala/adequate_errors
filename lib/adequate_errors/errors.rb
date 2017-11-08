@@ -56,5 +56,18 @@ module AdequateErrors
         error.match?(params)
       }
     end
+
+    # @return [Hash] attributes with their error messages
+    def to_hash
+      hash = {}
+      @errors.each do |error|
+        if hash.has_key?(error.attribute)
+          hash[error.attribute] << error.message
+        else
+          hash[error.attribute] = [error.message]
+        end
+      end
+      hash
+    end
   end
 end
