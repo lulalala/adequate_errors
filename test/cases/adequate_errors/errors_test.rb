@@ -43,6 +43,28 @@ describe AdequateErrors::Errors do
     end
   end
 
+  describe '#blank?' do
+    it 'returns true when empty' do
+      assert_equal true, subject.blank?
+    end
+
+    it 'returns false when error is present' do
+      subject.add(:title, :not_attractive)
+      assert_equal false, subject.blank?
+    end
+  end
+
+  describe '#empty?' do
+    it 'returns true when empty' do
+      assert_equal true, subject.empty?
+    end
+
+    it 'returns false when error is present' do
+      subject.add(:title, :not_attractive)
+      assert_equal false, subject.empty?
+    end
+  end
+
   describe '#where' do
     describe 'attribute' do
       it '' do

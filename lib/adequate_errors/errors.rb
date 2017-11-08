@@ -7,7 +7,7 @@ module AdequateErrors
     include Enumerable
 
     extend Forwardable
-    def_delegators :@errors, :each, :size, :clear, *Enumerable.instance_methods(false)
+    def_delegators :@errors, :each, :size, :clear, :blank?, :empty?, *Enumerable.instance_methods(false)
 
     def initialize(base)
       @base = base
