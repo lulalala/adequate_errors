@@ -25,9 +25,18 @@ module AdequateErrors
     # If no `type` is supplied, `:invalid` is assumed.
     #
     # @param attribute [Symbol] attribute that the error belongs to
-    # @param type [Symbol] error's type
+    # @param type [Symbol] error's type, defaults to `:invalid`.
+    #   As convenience, if type is String/Proc/Lambda,
+    #   it will be moved to `options[:message]`,
+    #   and type itself will be changed to the default `:invalid`.
     # @param options [Hash] extra conditions such as interpolated value
     def add(attribute, type = :invalid, options = {})
+
+      if !type.is_a? Symbol
+        options[:message] = type
+        type = :invalid
+      end
+
       @errors.append(::AdequateErrors::Error.new(@base, attribute, type, options))
     end
 

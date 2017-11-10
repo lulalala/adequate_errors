@@ -18,6 +18,29 @@ describe AdequateErrors::Errors do
       assert_equal :title, subject.first.attribute
       assert_equal :not_attractive, subject.first.type
     end
+
+    describe 'Proc provided' do
+      it 'is moved to options' do
+        proc = Proc.new { 'foo %{bar}' }
+        subject.add(:title, proc, bar: 'bar')
+        error = subject.first
+        assert_equal :title, error.attribute
+        assert_equal :invalid, error.type
+        assert_equal proc, error.options[:message]
+        assert_equal 'foo bar', error.message
+      end
+    end
+
+    describe 'String provided' do
+      it 'moves it to options' do
+        text = 'too outdated'
+        subject.add(:title, text)
+        error = subject.first
+        assert_equal :title, error.attribute
+        assert_equal :invalid, error.type
+        assert_equal text, error.options[:message]
+      end
+    end
   end
 
   describe '#delete' do

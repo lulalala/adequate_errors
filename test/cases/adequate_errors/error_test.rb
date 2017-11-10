@@ -75,5 +75,17 @@ describe AdequateErrors::Error do
         assert_equal 'Title jest nieprawidłowe', model.errors.adequate.first.message
       }
     end
+
+    it 'handles lambda in messages and option values, and i18n interpolation' do
+      subject = AdequateErrors::Error.new(model, :title, :invalid,
+        foo: 'foo',
+        bar: 'bar',
+        baz: Proc.new {'baz'},
+        message: Proc.new { |model, options|
+          "%{attribute} %{foo} #{options[:bar]} %{baz}"
+        }
+      )
+      assert_equal "Title foo bar baz", subject.message
+    end
   end
 end
