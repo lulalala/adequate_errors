@@ -57,7 +57,7 @@ module AdequateErrors
     # * <tt>adequate_errors.messages.blank</tt>
     def message
       if @options[:message].is_a?(Symbol)
-        type = @options.delete(:message) if @options[:message].is_a?(Symbol)
+        type = @options.delete(:message)
       else
         type = @type
       end
