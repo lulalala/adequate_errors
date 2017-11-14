@@ -1,33 +1,66 @@
 # AdequateErrors
 
-Renamed from Rails Error API Redesign Initiative
+Overcoming limitation of Rails model errors API:
 
-Let's make a more OO, more flexible error API!
+* more expressive `where` query
+* turn off message's attribute prefix.
+* lazy evaluation of messages
+
+## Introduction
+
+Rails errors API is simple to use, but can be inadequate when coping with more complex requirements.
+
+The API itself was originally a collection of message strings without much meta data. This makes the API very restrictive. Though `details` hash was added later to store meta information, many fundamental issues can not be fixed without altering the API and the architecture.
+
+This gem redesigned the API on its own object, co-existing with existing Rails API, so nothing will break, allowing you to migrate the code one at a time.
+
+## Quick start
+
+To access the AdequateErrors object, call:
+
+    model.errors.adequate
+
+From this object, many convenience methods are provided, for example this would return an array of AdequateErrors::Error objects, which matches the where query.
+
+    model.errors.adequate.where(attribute:'title', :type => :too_short, length: 5)
+
+The following prints out each error's full message one by one:
+
+    model.errors.adequate.each {|error| puts error.message }
+    
+The following returns an array of all message strings:
+
+    model.errors.adequate.messages
+    
+For full documentation, please see http://www.rubydoc.info/github/lulalala/adequate_errors
+
+## Key difference to Rails own errors API
+
+Errors are stored as Ruby objects instead of message strings, this makes more fine-grained query possible.
+
+Error messages are evaluated lazily, which means it can be rendered in a different locale at view rendering time.
+
+The messages in the locale file are looked up in its own `adequate_errors` namespace, for example:
+
+    en:
+      adequate_errors:
+        messages:
+          invalid: "%{attribute} is invalid"
+
+Note that each message by default has the `attribute` prefix. This allow easy removal of attribute prefix by overriding each message in the locale file. You no longer need to attach errors to `:base` for that purpose. This allows prefix to be changed per language.
+
+Calls to Rails' API are synced to AdequateErrors object, but not the reverse.
+
+## We want to hear your issues too
+
+If you also have issues with exsting API, share it by filing that issue here.
+
+We collect use cases in issues and analyze the problem in wiki (publicly editable):
+
+[So come to our wiki, see what's going on, and join us!](https://github.com/lulalala/adequate_errors/wiki)
 
 ---
 
-As requirements get more complex, Rails' error API often cannot cope with them elegantly.
-
-This repo aims to collect the inconveniences you have faced, and allow you to suggest a better, more usable API.
-
-The project takes place in both the wiki and the git repo itself.
-
-In the wiki we:
-
-  1. Collect use case
-  2. Design API
-
-In the git repo we implement that interface:
-
-  1. Implement standalone interface to access AdequateErrors.
-  2. Write a bridge so official Rails errors states can be reflected in AdequateErrors
-
-
-[So come to our wiki, see what's going on, and join us!](https://github.com/lulalala/rails_error_api_redesign/wiki)
-
-
-The second stage has began, where we start implementation, feel free to give a PR.
-
----
-
-This is a fan project and is not affiliated to Rails Core team.
+This repo was called Rails Error API Redesign Initiative.  
+This is a fan project and is not affiliated to Rails Core team,  
+but my wish is that one day this can be adapted into Rails too.
