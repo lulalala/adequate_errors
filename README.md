@@ -51,6 +51,12 @@ Note that each message by default has the `attribute` prefix. This allow easy re
 
 Calls to Rails' API are synced to AdequateErrors object, but not the reverse.
 
+## Migration Note
+
+Deprecated methods such as `[]=`, `get` and `set` are not supported, therefore calling those methods will not sync to AdequateErrors.
+
+The gem is developed from ActiveModel 5.1, but it should work with earlier versions.
+
 ## We want to hear your issues too
 
 If you also have issues with exsting API, share it by filing that issue here.
