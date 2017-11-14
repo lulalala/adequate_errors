@@ -10,9 +10,9 @@ Overcoming limitation of Rails model errors API:
 
 Rails errors API is simple to use, but can be inadequate when coping with more complex requirements.
 
-The API itself was originally a collection of message strings without much meta data. This makes the API very restrictive. Though `details` hash was added later to store meta information, many fundamental issues can not be fixed without altering the API and the architecture.
+The existing API was originally a collection of message strings without much meta data, making it very restrictive. Though `details` hash was added later for storing meta information, many fundamental issues can not be fixed without altering the API and the architecture.
 
-This gem redesigned the API on its own object, co-existing with existing Rails API, so nothing will break, allowing you to migrate the code one at a time.
+This gem redesigned the API, placing it in its own object, co-existing with existing Rails API. Thus nothing will break, allowing you to migrate the code one at a time.
 
 ## Quick start
 
