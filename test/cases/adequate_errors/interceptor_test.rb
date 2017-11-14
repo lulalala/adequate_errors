@@ -1,8 +1,7 @@
 require "minitest/autorun"
 require "active_model"
 require "models/topic"
-require 'adequate_errors/interceptor'
-require 'adequate_errors/errors'
+require 'adequate_errors'
 
 describe AdequateErrors::Interceptor do
   let(:model) { Topic.new }
@@ -35,6 +34,25 @@ describe AdequateErrors::Interceptor do
       assert_equal :title, adequate_errors.first.attribute
       assert_equal :not_attractive, adequate_errors.first.type
       assert_equal model, adequate_errors.first.base
+    end
+
+    it 'creates full message for AdequateErrors when message is a symbol' do
+      model.errors.add(:title, :invalid)
+
+      assert_equal 'Title is invalid', adequate_errors.first.message
+    end
+
+    it 'creates full message for AdequateErrors when message is a String' do
+      model.errors.add(:title, "not informative")
+
+      assert_equal 'Title not informative', adequate_errors.first.message
+    end
+
+    it 'creates full message for AdequateErrors when options message is provided' do
+      model.errors.add(:title, :not_attractive, message:"not attractive yo")
+
+      assert_equal 'Title not attractive yo', adequate_errors.first.message
+      assert_equal :not_attractive, adequate_errors.first.type
     end
   end
 

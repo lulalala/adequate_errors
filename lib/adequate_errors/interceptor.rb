@@ -22,8 +22,21 @@ module AdequateErrors
     end
 
     def add(attribute, message = :invalid, options = {})
-      super
-      @adequate_errors.add(attribute, message, options)
+      adequate_options = options.dup
+
+      messages = super
+
+      if options.has_key?(:message) && !options[:message].is_a?(Symbol)
+        adequate_options[:message] = full_message(attribute, messages.last)
+      end
+
+      adequate_message = if !message.is_a?(Symbol)
+        full_message(attribute, messages.last)
+      else
+        message
+      end
+
+      @adequate_errors.add(attribute, adequate_message, adequate_options)
     end
 
     # Accessor
