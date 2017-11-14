@@ -76,6 +76,12 @@ describe AdequateErrors::Error do
       }
     end
 
+    it 'uses current locale' do
+      I18n.backend.store_translations(:en,{adequate_errors: {messages: {inadequate: "Inadequate %{attribute} found!"}}})
+      model.errors.adequate.add(:title, :inadequate)
+      assert_equal 'Inadequate Title found!', model.errors.adequate.first.message
+    end
+
     it 'handles lambda in messages and option values, and i18n interpolation' do
       subject = AdequateErrors::Error.new(model, :title, :invalid,
         foo: 'foo',
