@@ -1,9 +1,9 @@
 require "active_model/errors"
 require "adequate_errors/errors"
 
-# Wraps Rails' errors object,
-# monitor updates to sync AdequateErrors.
 module AdequateErrors
+  # Wraps around Rails' errors object, intercepting its state changes
+  # in order to update AdequateErrors' errors object.
   module Interceptor
     def initialize(base)
       rails_errors = super
@@ -33,6 +33,7 @@ module AdequateErrors
   end
 end
 
+# @private
 module ActiveModel
   class Errors
     prepend AdequateErrors::Interceptor

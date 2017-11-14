@@ -1,4 +1,13 @@
 module AdequateErrors
+  # Represents one single error
+  # @!attribute [r] base
+  #   @return [ActiveModel::Base] the object which the error belongs to
+  # @!attribute [r] attribute
+  #   @return [Symbol] attribute of the object which the error belongs to
+  # @!attribute [r] type
+  #   @return [Symbol] error's type
+  # @!attribute [r] options
+  #   @return [Hash] additional options
   class Error
     def initialize(base, attribute, type, options = {})
       @base = base
@@ -7,13 +16,13 @@ module AdequateErrors
       @options = options
     end
 
-    attr_reader :base,:attribute, :type, :options
+    attr_reader :base, :attribute, :type, :options
 
     # Full message of the error.
     #
-    # Key difference to Rails errors include:
+    # === Key differences to Rails vanilla errors
     #
-    # 1. Flexible positioning of attribute name interpolation
+    # ==== 1. Flexible positioning of attribute name interpolation
     #
     # In Rails, errors' full messages are always prefixed with attribute name,
     # and if prefix is not wanted, developer often adds error to the `base' attribute instead.
@@ -24,15 +33,13 @@ module AdequateErrors
     # The same error can have prefix in English, and be prefix-less in Russian.
     # If no prefix is needed, one should update the locale file accordingly,
     #
-    # 2. Message evaluated lazily
+    # ==== 2. Message evaluated lazily
     #
     # In Rails, error message is evaluated during the `add` call.
     # AdequateErrors evaluates message lazily at `message` call instead,
     # so one can change message locale after model has been validated.
     #
-    #
-    #
-    # Order of I18n lookup:
+    # === Order of I18n lookup:
     #
     # Error messages are first looked up in <tt>activemodel.adequate_errors.models.MODEL.attributes.ATTRIBUTE.MESSAGE</tt>,
     # if it's not there, it's looked up in <tt>activemodel.adequate_errors.models.MODEL.MESSAGE</tt> and if
@@ -93,6 +100,8 @@ module AdequateErrors
       I18n.translate(key, i18n_options)
     end
 
+    # @param (see Errors#where)
+    # @return [Boolean] whether error matches the params
     def match?(params)
       if params.key?(:attribute) && @attribute != params[:attribute]
         return false

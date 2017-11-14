@@ -3,20 +3,25 @@ require 'forwardable'
 require 'adequate_errors/error'
 
 module AdequateErrors
+  # Collection of {Error} objects.
+  # Provides convenience methods to access these errors.
+  # It is accessed via +model.errors.adequate+
   class Errors
     include Enumerable
 
     extend Forwardable
     def_delegators :@errors, :each, :size, :clear, :blank?, :empty?, *Enumerable.instance_methods(false)
 
+    # @param base [ActiveModel::Base]
     def initialize(base)
       @base = base
       @errors = []
     end
 
-    def delete(key)
+    # Delete errors of attribute
+    def delete(attribute)
       @errors.delete_if do |error|
-        error.attribute == key
+        error.attribute == attribute
       end
     end
 
@@ -52,12 +57,15 @@ module AdequateErrors
       where(params).map(&:message)
     end
 
-    # @param params [Hash] filter condition
-    #   :attribute key matches errors belonging to specific attribute.
-    #   :type key matches errors with specific type of error, for example :blank
-    #   custom keys can be used to match custom options used during {#add}.
-    # @return [Array(AdequateErrors::Error)]
+    # @param params [Hash]
+    #   filter condition
+    #   The most common keys are +:attribute+ and +:type+,
+    #   but other custom keys given during {#add} can also be used.
     #   If params is empty, all errors are returned.
+    # @option params [Symbol] :attribute Filtering on attribute the error belongs to
+    # @option params [Symbol] :type Filter on type of error
+    #
+    # @return [Array(AdequateErrors::Error)] matching {Error}.
     def where(params)
       return @errors.dup if params.blank?
 
@@ -66,8 +74,7 @@ module AdequateErrors
       }
     end
 
-    # Returns true if the given attribute contains error, false otherwise.
-    # @return [Boolean]
+    # @return [Boolean] whether the given attribute contains error.
     def include?(attribute)
       @errors.any?{|error| error.attribute == attribute }
     end
