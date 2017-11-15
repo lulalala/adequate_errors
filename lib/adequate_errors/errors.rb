@@ -60,7 +60,7 @@ module AdequateErrors
     # @param params [Hash]
     #   filter condition
     #   The most common keys are +:attribute+ and +:type+,
-    #   but other custom keys given during {#add} can also be used.
+    #   but other custom keys given during {Errors#add} can also be used.
     #   If params is empty, all errors are returned.
     # @option params [Symbol] :attribute Filtering on attribute the error belongs to
     # @option params [Symbol] :type Filter on type of error
