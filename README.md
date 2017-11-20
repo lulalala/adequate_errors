@@ -32,7 +32,8 @@ The following returns an array of all message strings:
 
     model.errors.adequate.messages
     
-For full documentation, please see http://www.rubydoc.info/github/lulalala/adequate_errors
+
+Please see http://www.rubydoc.info/github/lulalala/adequate_errors/AdequateErrors/Errors for full documentation, as some API are different.
 
 ## Key difference to Rails own errors API
 
