@@ -6,10 +6,11 @@ require "adequate_errors/version"
 Gem::Specification.new do |spec|
   spec.name          = "adequate_errors"
   spec.version       = AdequateErrors::VERSION
+  spec.license       = 'MIT'
   spec.authors       = ["lulalala"]
   spec.email         = ["mark@goodlife.tw"]
 
-  spec.summary       = %q{Object-Oriented ActiveModel errors interface}
+  spec.summary       = %q{Overcoming limitation of Rails model errors API}
   spec.homepage      = "https://github.com/lulalala/adequate_errors/"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
@@ -18,6 +19,8 @@ Gem::Specification.new do |spec|
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
+
+  spec.required_ruby_version = '>= 2.0.0'
 
   spec.add_dependency "activemodel"
 
