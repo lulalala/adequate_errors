@@ -2,7 +2,8 @@
 
 Overcoming limitation of Rails model errors API:
 
-* more expressive `where` query
+* fine-grained `where` query
+* object-oriented Error object
 * turn off message's attribute prefix.
 * lazy evaluation of messages
 
@@ -10,51 +11,106 @@ Overcoming limitation of Rails model errors API:
 
 Rails errors API is simple to use, but can be inadequate when coping with more complex requirements.
 
+Examples of how existing Rails API is limiting are listed here: http://lulalala.logdown.com/posts/2909828-adequate-errors
+
 The existing API was originally a collection of message strings without much meta data, making it very restrictive. Though `details` hash was added later for storing meta information, many fundamental issues can not be fixed without altering the API and the architecture.
 
 This gem redesigned the API, placing it in its own object, co-existing with existing Rails API. Thus nothing will break, allowing you to migrate the code one at a time.
 
+
 ## Quick start
 
-To access the AdequateErrors object, call:
+To access the AdequateErrors, call:
 
     model.errors.adequate
 
-From this object, many convenience methods are provided, for example this would return an array of AdequateErrors::Error objects, which matches the where query.
+From this `Errors` object, many convenience methods are provided:
+
+Return an array of AdequateErrors::Error objects, matching a condition:
 
     model.errors.adequate.where(attribute:'title', :type => :too_short, length: 5)
 
-The following prints out each error's full message one by one:
+Prints out each error's full message one by one:
 
     model.errors.adequate.each {|error| puts error.message }
     
-The following returns an array of all message strings:
+Return an array of all message strings:
 
     model.errors.adequate.messages
     
+## `Error` object
 
-Please see http://www.rubydoc.info/github/lulalala/adequate_errors/AdequateErrors/Errors for full documentation, as some API are different.
+An `Error` object provides the following:
 
-## Key difference to Rails own errors API
+* `attribute` is the model attribute the error belongs to.
+* `type` is the error type.
+* `options` is a hash containing additional information such as `:count` or `:length`.
+* `message` is the error message. It is full message by design.
 
-Errors are stored as Ruby objects instead of message strings, this makes more fine-grained query possible.
+## `where` query
+
+Use `where` method to find errors matching different conditions. An array of Error objects are returned.
+
+To find all errors of `title` attribute, pass it with `:attribute` key:
+
+    model.errors.adequate.where(:attribute => :title)
+    
+You can also filter by error type using the `:type` key:
+
+    model.errors.adequate.where(:type => :too_short)
+    
+Custom attributes passed can also be used to filter errors:
+
+    model.errors.adequate.where(:attribute => :title, :type => :too_short, length: 5)
+    
+    
+## `include?`
+
+Same as Rails, provide the attribute name to see if that attribute has errors.
+
+## `add`, `delete`
+
+Same as built-in counterparts.
+
+## Message and I18n
+
+Error message strings reside under `adequate_errors` namespace. Unlike Rails, there is no global prefixing of attributes. Instead, `%{attribute}` is added into each error message when needed.
+
+```yaml
+en:
+  adequate_errors:
+    messages:
+      invalid: "%{attribute} is invalid"
+      inclusion: "%{attribute} is not included in the list"
+      exclusion: "%{attribute} is reserved"
+```
+
+This allows omission of attribute prefix. You no longer need to attach errors to `:base` for that purpose.
+
+Built-in Rails error types already have been prefixed out of the box, but error types from other gems have to be handled manually by copying entries to the  `adequate_errors` namespace and prefixing with attributes.
 
 Error messages are evaluated lazily, which means it can be rendered in a different locale at view rendering time.
 
-The messages in the locale file are looked up in its own `adequate_errors` namespace, for example:
 
-    en:
-      adequate_errors:
-        messages:
-          invalid: "%{attribute} is invalid"
+## `messages`
 
-Note that each message by default has the `attribute` prefix. This allow easy removal of attribute prefix by overriding each message in the locale file. You no longer need to attach errors to `:base` for that purpose. This allows prefix to be changed per language.
+Returns an array of all messages.
 
-Calls to Rails' API are synced to AdequateErrors object, but not the reverse.
+    model.errors.adequate.messages
 
-## Migration Note
+## `messages_for`
 
-Deprecated methods such as `[]=`, `get` and `set` are not supported, therefore calling those methods will not sync to AdequateErrors.
+Returns an array of messages, filtered by conditions. Method argument is the same as `where`.
+
+    model.errors.adequate.messages_for(:attribute => :title, :type => :too_short, length: 5)
+    
+## Full documentation
+
+http://www.rubydoc.info/github/lulalala/adequate_errors
+
+## Note
+
+Calls to Rails' API are synced to AdequateErrors object, but not in reverse. Deprecated methods such as `[]=`, `get` and `set` are not sync'ed however.
 
 The gem is developed from ActiveModel 5.1, but it should work with earlier versions.
 
