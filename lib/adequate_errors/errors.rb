@@ -1,6 +1,7 @@
 require 'active_model/errors'
 require 'forwardable'
 require 'adequate_errors/error'
+require 'adequate_errors/nested_error'
 
 module AdequateErrors
   # Collection of {Error} objects.
@@ -43,6 +44,18 @@ module AdequateErrors
       end
 
       @errors.append(::AdequateErrors::Error.new(@base, attribute, type, options))
+    end
+
+    # Imports error
+    # For copying nested model's errors back to base model.
+    # The provided error will be wrapped, and its attribute/type will be copied across.
+    # If attribute or type needs to be overriden, use `override_options`.
+    #
+    # @param override_options [Hash]
+    # @option override_options [Symbol] :attribute Override the attribute the error belongs to
+    # @option override_options [Symbol] :type Override type of the error.
+    def import(error, override_options = {})
+      @errors.append(::AdequateErrors::NestedError.new(@base, error, override_options))
     end
 
     # @return [Array(String)] all error messages

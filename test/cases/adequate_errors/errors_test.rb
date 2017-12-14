@@ -43,6 +43,23 @@ describe AdequateErrors::Errors do
     end
   end
 
+  describe '#import' do
+    let(:inner_error) { AdequateErrors::Error.new(model, :foo, :not_attractive) }
+
+    it 'creates a NestedError' do
+      assert_equal 0, subject.size
+
+      subject.import(inner_error)
+
+      assert_equal 1, subject.size
+      error = subject.first
+      assert_equal :foo, error.attribute
+      assert_equal :not_attractive, error.type
+      assert_equal AdequateErrors::NestedError, error.class
+      assert_equal inner_error, error.inner_error
+    end
+  end
+
   describe '#delete' do
     it 'assigns attributes' do
       subject.add(:title, :not_attractive)

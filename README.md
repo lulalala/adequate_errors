@@ -72,6 +72,22 @@ Same as Rails, provide the attribute name to see if that attribute has errors.
 
 Same as built-in counterparts.
 
+## `import`
+
+For copying an error from inner model to outer model, such as form object. This ensures lazy message generation can still reference all information that the inner error has.
+
+```ruby
+inner_model.errors.adequate.each do |error|
+  errors.adequate.import(error)
+end
+```
+
+Attribute and type can be overriden in case when attribute does not exist in the outer model:
+
+```ruby
+  errors.adequate.import(error, attribute: :foo, type: :bar)
+```
+
 ## Message and I18n
 
 Error message strings reside under `adequate_errors` namespace. Unlike Rails, there is no global prefixing of attributes. Instead, `%{attribute}` is added into each error message when needed.
