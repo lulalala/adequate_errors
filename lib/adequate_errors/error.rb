@@ -92,7 +92,11 @@ module AdequateErrors
         model: @base.model_name.human,
         attribute: humanized_attribute,
         value: value,
-        object: @base
+        object: @base,
+        exception_handler: ->(exception, locale, key, option) {
+          rails_errors = @base.errors
+          rails_errors.full_message(@attribute, rails_errors.generate_message(@attribute, @type, @options))
+        }
       }.merge!(@options)
 
       I18n.translate(key, i18n_options)

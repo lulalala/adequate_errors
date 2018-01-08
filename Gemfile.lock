@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    adequate_errors (0.1.0)
+    adequate_errors (0.1.2)
       activemodel
 
 GEM
@@ -19,7 +19,7 @@ GEM
     diff-lcs (1.3)
     i18n (0.9.1)
       concurrent-ruby (~> 1.0)
-    minitest (5.10.3)
+    minitest (5.11.1)
     rake (10.5.0)
     rspec (3.7.0)
       rspec-core (~> 3.7.0)

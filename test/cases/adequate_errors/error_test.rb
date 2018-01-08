@@ -93,5 +93,12 @@ describe AdequateErrors::Error do
       )
       assert_equal "Title foo bar baz", subject.message
     end
+
+    it 'falls back to Rails message if translation can not be found' do
+      I18n.backend.store_translations(:en,{errors: {messages: {too_much_water: "has too much water"}}})
+
+      subject = AdequateErrors::Error.new(model, :title, :too_much_water)
+      assert_equal "Title has too much water", subject.message
+    end
   end
 end
