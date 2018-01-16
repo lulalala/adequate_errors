@@ -24,7 +24,7 @@ describe AdequateErrors::Interceptor do
       assert_equal 0,model.errors.count
       assert_equal 0, model.errors.details.count
 
-      model.errors.add(:title, :not_attractive)
+      return_value = model.errors.add(:title, :not_attractive)
 
       assert_equal 1, model.errors.size
       assert_equal 1, model.errors.details.count
@@ -34,6 +34,8 @@ describe AdequateErrors::Interceptor do
       assert_equal :title, adequate_errors.first.attribute
       assert_equal :not_attractive, adequate_errors.first.type
       assert_equal model, adequate_errors.first.base
+
+      assert(return_value.all? { |v| v.is_a? String })
     end
 
     it 'creates full message for AdequateErrors when message is a symbol' do

@@ -37,6 +37,8 @@ module AdequateErrors
       end
 
       @adequate_errors.add(attribute, adequate_message, adequate_options)
+
+      messages
     end
 
     # Accessor
