@@ -7,6 +7,10 @@ Overcoming limitation of Rails model errors API:
 * turn off message's attribute prefix.
 * lazy evaluation of messages
 
+## We want some of this as part of Rails
+
+I have opened a [pull request](https://github.com/rails/rails/pull/32313) to migrate some ideas to Rails. It's a great chance for you to shape the future of the API. Please join the discussion there :)
+
 ## Introduction
 
 Rails errors API is simple to use, but can be inadequate when coping with more complex requirements.
